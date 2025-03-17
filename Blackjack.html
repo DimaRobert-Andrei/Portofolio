@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        pre {
+            background-color: #282c34;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Blackjack Java Code</h1>
+    <pre><code>import java.util.*;
+
+public class Blackjack {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+
+        System.out.println(" Welcome to Blackjack! ");
+
+        List&lt;Integer&gt; playerHand = new ArrayList&lt;&gt;();
+        List&lt;Integer&gt; dealerHand = new ArrayList&lt;&gt;();
+
+        playerHand.add(drawCard(random));
+        playerHand.add(drawCard(random));
+        dealerHand.add(drawCard(random));
+        dealerHand.add(drawCard(random));
+
+        System.out.println("Your cards: " + playerHand + " (Total: " + getHandValue(playerHand) + ")");
+        System.out.println("Dealer's first card: " + dealerHand.get(0));
+
+        while (true) {
+            System.out.print("Do you want to Hit (H) or Stand (S)? ");
+            String choice = scanner.next().toUpperCase();
+
+            if (choice.equals("H")) {
+                playerHand.add(drawCard(random));
+                System.out.println("Your cards: " + playerHand + " (Total: " + getHandValue(playerHand) + ")");
+
+                if (getHandValue(playerHand) > 21) {
+                    System.out.println(" You busted! Dealer wins.");
+                    return;
+                }
+            } else if (choice.equals("S")) {
+                break;
+            }
+        }
+
+        System.out.println("Dealer's full hand: " + dealerHand + " (Total: " + getHandValue(dealerHand) + ")");
+        while (getHandValue(dealerHand) < 17) {
+            dealerHand.add(drawCard(random));
+            System.out.println("Dealer draws a card: " + dealerHand + " (Total: " + getHandValue(dealerHand) + ")");
+        }
+
+        // Catigator
+        int playerScore = getHandValue(playerHand);
+        int dealerScore = getHandValue(dealerHand);
+
+        if (dealerScore > 21 || playerScore > dealerScore) {
+            System.out.println("🎉 Congratulations! You win!");
+        } else if (playerScore == dealerScore) {
+            System.out.println(" It's a tie!");
+        } else {
+            System.out.println(" Dealer wins! Better luck next time.");
+        }
+
+        scanner.close();
+    }
+
+    public static int drawCard(Random random) {
+        return random.nextInt(10) + 2;
+    }
+    public static int getHandValue(List&lt;Integer&gt; hand) {
+        int sum = 0;
+        int aceCount = 0;
+
+        for (int card : hand) {
+            sum += card;
+            if (card == 11) {
+                aceCount++;
+            }
+        }
+
+        // Pentru suma carti+as>21 =>as=1
+        while (sum > 21 && aceCount > 0) {
+            sum -= 10;
+            aceCount--;
+        }
+
+        return sum;
+    }
+}
+    </code></pre>
+</body>
+</html>
