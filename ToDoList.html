@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoListApp Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        pre {
+            background-color: #282c34;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <h1>TodoListApp Java Code</h1>
+    <pre><code>
+	import javax.swing.*;
+import java.awt.*;
+
+public class TodoListApp {
+    private JFrame frame;
+    private DefaultListModel<String> taskListModel;
+    private JList<String> taskList;
+    private JTextField taskInputField;
+
+    public static void main(String[] args) {
+        // Creare și rulare aplicație
+        EventQueue.invokeLater(() -> {
+            try {
+                TodoListApp window = new TodoListApp();
+                window.frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public TodoListApp() {
+        // Creare frame
+        frame = new JFrame();
+        frame.setTitle("Lista");
+        frame.setBounds(100, 100, 450, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(new BorderLayout());
+
+        taskListModel = new DefaultListModel<>();
+
+        taskList = new JList<>(taskListModel);
+        taskList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollPane = new JScrollPane(taskList);
+        frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+
+        taskInputField = new JTextField();
+        frame.getContentPane().add(taskInputField, BorderLayout.NORTH);
+        JPanel panel = new JPanel();
+        frame.getContentPane().add(panel, BorderLayout.SOUTH);
+
+        JButton addButton = new JButton("Add Task");
+        addButton.addActionListener(e -> addTask());
+        panel.add(addButton);
+
+        JButton removeButton = new JButton("Remove Task");
+        removeButton.addActionListener(e -> removeTask());
+        panel.add(removeButton);
+    }
+
+    private void addTask() {
+        String task = taskInputField.getText().trim();
+        if (!task.isEmpty()) {
+            taskListModel.addElement(task);
+            taskInputField.setText("");  // Reset input
+        } else {
+            JOptionPane.showMessageDialog(frame, "Please enter a task.");
+        }
+    }
+     
+    private void removeTask() {
+        int selectedIndex = taskList.getSelectedIndex();
+        if (selectedIndex != -1) {
+            taskListModel.remove(selectedIndex);
+        } else {
+            JOptionPane.showMessageDialog(frame, "Please select a task to remove.");
+        }
+    }
+}
+
+    </code></pre>
+</body>
+</html>
